@@ -35,7 +35,7 @@ body {
 .overlay h2 {
   font-size: 1.5rem;
   margin: 10px 0;
-  color: #fff;
+  color: #b53000;
 }
 
 .overlay p {
@@ -45,7 +45,7 @@ body {
 
 .btn {
   padding: 10px 20px;
-  background: #feda00;
+  background: #54d907;
   color: #111;
   text-decoration: none;
   border-radius: 5px;
@@ -67,7 +67,7 @@ body {
   width: 200px;
   margin: 10px;
   border-radius: 10px;
-  border: 2px solid #feda00;
+  border: 2px solid #54d907;
 }
 
 .socials a {
