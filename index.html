@@ -50,8 +50,12 @@
   Your browser does not support the video tag.
 </video>
 
-  <section id="quiz" style="max-width:400px; margin:20px auto; font-family: Arial, sans-serif;">
-  <h2>⚽ Quick Quiz</h2>
+ <section id="quiz" style="max-width:400px; margin:20px auto; font-family: Arial, sans-serif; padding: 20px; border: 2px solid #444; border-radius: 10px; background: #111; color: #eee;">
+  <h2 style="text-align:center;">⚽ Quick Quiz</h2>
+
+  <p style="text-align:center; font-size: 18px; margin-bottom: 15px;">
+    Score: <span id="scoreCounter">0</span> / 10
+  </p>
 
   <div class="question-block" style="margin-bottom:20px;">
     <p>1. How old is [Mesut]?</p>
@@ -109,15 +113,28 @@
   
   <div class="question-block" style="margin-bottom:20px;">
     <p>10. Which foot does he prefer for shooting?</p>
-    <input type="text" class="quizInput" data-answer="left" placeholder="Type your answer..." style="width: 100%; padding: 8px; font-size:16px;"/>    <p class="quizFeedback" style="margin-top:10px; font-weight:bold;"></p>
+    <input type="text" class="quizInput" data-answer="left" placeholder="Type your answer..." style="width: 100%; padding: 8px; font-size:16px;"/>
+    <p class="quizFeedback" style="margin-top:10px; font-weight:bold;"></p>
   </div>
   
+  <button id="takeScreenshot" style="width: 100%; padding: 10px; background: #f39c12; border: none; color: #111; font-size: 16px; font-weight: bold; cursor: pointer; border-radius: 5px;">
+    📸 Take Screenshot of Your Score
+  </button>
 </section>
+
+<!-- Add html2canvas library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <script>
   const inputs = document.querySelectorAll('.quizInput');
+  const scoreCounter = document.getElementById('scoreCounter');
+  const totalQuestions = inputs.length;
+  let score = 0;
 
-  inputs.forEach(input => {
+  // Keep track of which inputs are currently correct to avoid double counting
+  const correctStates = new Array(totalQuestions).fill(false);
+
+  inputs.forEach((input, index) => {
     input.addEventListener('input', () => {
       const correctAnswer = input.dataset.answer.trim().toLowerCase();
       const userAnswer = input.value.trim().toLowerCase();
@@ -126,16 +143,51 @@
       if(userAnswer.length === 0) {
         feedback.textContent = "";
         feedback.style.color = "";
+        if(correctStates[index]) {
+          correctStates[index] = false;
+          score--;
+          updateScore();
+        }
         return;
       }
 
       if(userAnswer === correctAnswer) {
         feedback.textContent = "🎉 Correct!";
-        feedback.style.color = "green";
+        feedback.style.color = "limegreen";
+
+        if(!correctStates[index]) {
+          correctStates[index] = true;
+          score++;
+          updateScore();
+        }
       } else {
         feedback.textContent = "❌ Try again...";
         feedback.style.color = "red";
+
+        if(correctStates[index]) {
+          correctStates[index] = false;
+          score--;
+          updateScore();
+        }
       }
+    });
+  });
+
+  function updateScore() {
+    scoreCounter.textContent = score;
+  }
+
+  // Screenshot functionality
+  const btnScreenshot = document.getElementById('takeScreenshot');
+  const quizSection = document.getElementById('quiz');
+
+  btnScreenshot.addEventListener('click', () => {
+    html2canvas(quizSection).then(canvas => {
+      // Create a link and trigger download
+      const link = document.createElement('a');
+      link.download = `Quiz_Score_${score}_of_${totalQuestions}.png`;
+      link.href = canvas.toDataURL();
+      link.click();
     });
   });
 </script>
