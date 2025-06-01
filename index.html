@@ -49,7 +49,55 @@
   <source src="video.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
-  
+
+  <section id="quiz" style="max-width:400px; margin:20px auto; font-family: Arial, sans-serif;">
+  <h2>⚽ Quick Quiz</h2>
+
+  <div class="question-block" style="margin-bottom:20px;">
+    <p>1. How old is [Mesut]?</p>
+    <input type="text" class="quizInput" data-answer="8" placeholder="Type your answer..." style="width: 100%; padding: 8px; font-size:16px;"/>
+    <p class="quizFeedback" style="margin-top:10px; font-weight:bold;"></p>
+  </div>
+
+  <div class="question-block" style="margin-bottom:20px;">
+    <p>2. Which club does he currently play for?</p>
+    <input type="text" class="quizInput" data-answer="Troya fk" placeholder="Type your answer..." style="width: 100%; padding: 8px; font-size:16px;"/>
+    <p class="quizFeedback" style="margin-top:10px; font-weight:bold;"></p>
+  </div>
+
+  <div class="question-block" style="margin-bottom:20px;">
+    <p>3. What position does he play?</p>
+    <input type="text" class="quizInput" data-answer="Midfielder" placeholder="Type your answer..." style="width: 100%; padding: 8px; font-size:16px;"/>
+    <p class="quizFeedback" style="margin-top:10px; font-weight:bold;"></p>
+  </div>
+</section>
+
+<script>
+  const inputs = document.querySelectorAll('.quizInput');
+
+  inputs.forEach(input => {
+    input.addEventListener('input', () => {
+      const correctAnswer = input.dataset.answer.trim().toLowerCase();
+      const userAnswer = input.value.trim().toLowerCase();
+      const feedback = input.nextElementSibling;
+
+      if(userAnswer.length === 0) {
+        feedback.textContent = "";
+        feedback.style.color = "";
+        return;
+      }
+
+      if(userAnswer === correctAnswer) {
+        feedback.textContent = "🎉 Correct!";
+        feedback.style.color = "green";
+      } else {
+        feedback.textContent = "❌ Try again...";
+        feedback.style.color = "red";
+      }
+    });
+  });
+</script>
+
   <section class="contact">
     <h2>Follow Mesut</h2>
     <div class="socials">
