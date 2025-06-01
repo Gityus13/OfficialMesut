@@ -45,6 +45,76 @@
     <img src="mesut3.jpg.png" alt="Mesut with team" />
   </section>
 
+  <section id="poll" style="max-width: 400px; margin: 30px auto; padding: 20px; background: #222; border-radius: 10px; color: #eee; font-family: Arial, sans-serif;">
+  <h2 style="text-align:center;">🏆 Fan Poll: Man of the Match</h2>
+
+  <form id="pollForm">
+    <label style="display:block; margin-bottom:10px; cursor:pointer;">
+      <input type="radio" name="Mesut" value="Player 1" style="margin-right:8px;"> Player 1
+    </label>
+    <label style="display:block; margin-bottom:10px; cursor:pointer;">
+      <input type="radio" name="Yusif" value="Player 2" style="margin-right:8px;"> Player 2
+    </label>
+    <label style="display:block; margin-bottom:10px; cursor:pointer;">
+      <input type="radio" name="Hikmat" value="Player 3" style="margin-right:8px;"> Player 3
+    </label>
+    <label style="display:block; margin-bottom:10px; cursor:pointer;">
+      <input type="radio" name="Adem" value="Player 4" style="margin-right:8px;"> Player 4
+    </label>
+
+    <button type="submit" style="margin-top: 15px; padding: 10px; width: 100%; background: #f39c12; border: none; font-weight: bold; color: #111; cursor: pointer; border-radius: 5px;">Vote Now</button>
+  </form>
+
+  <div id="pollResults" style="margin-top: 20px; display:none;">
+    <h3 style="text-align:center;">Current Results</h3>
+    <ul style="list-style:none; padding: 0; font-size: 16px;" id="resultsList"></ul>
+  </div>
+</section>
+
+<script>
+  // Store votes in localStorage to keep it simple (for demo only)
+  const pollForm = document.getElementById('pollForm');
+  const pollResults = document.getElementById('pollResults');
+  const resultsList = document.getElementById('resultsList');
+
+  // Initialize vote counts or get from localStorage
+  let votes = JSON.parse(localStorage.getItem('fanPollVotes')) || {
+    "Player 1": 0,
+    "Player 2": 0,
+    "Player 3": 0,
+    "Player 4": 0
+  };
+
+  function updateResults() {
+    resultsList.innerHTML = '';
+    for (const player in votes) {
+      resultsList.innerHTML += `<li>${player}: ${votes[player]} votes</li>`;
+    }
+  }
+
+  pollForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const formData = new FormData(pollForm);
+    const selected = formData.get('player');
+    if (!selected) {
+      alert('Please select a player before voting!');
+      return;
+    }
+    votes[selected]++;
+    localStorage.setItem('fanPollVotes', JSON.stringify(votes));
+    updateResults();
+    pollResults.style.display = 'block';
+    pollForm.style.display = 'none';
+  });
+
+  // Show results if already voted (optional)
+  if(localStorage.getItem('fanPollVotes')) {
+    updateResults();
+    pollResults.style.display = 'block';
+    pollForm.style.display = 'none';
+  }
+</script>
+  
   <video width="640" height="360" controls>
   <source src="video.mp4" type="video/mp4">
   Your browser does not support the video tag.
